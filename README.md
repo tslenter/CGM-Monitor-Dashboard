@@ -336,8 +336,9 @@ ENABLE=careportal%20basal%20dbsize%20rawbg%20iob%20maker%20cob%20bwp%20cage%20ia
 SHOW_PLUGINS=careportal%20dbsize
 EOF
 npm install pm2 -g
+pm2 cleardump
 env $(cat /home/nightscout/nightscout/my.env) PORT=1337 pm2 start server.js
-sudo env PATH=$PATH:/home/nightscout/.nvm/versions/node/v16.20.1/bin pm2 startup systemd -u nightscout --hp /home/nightscout/nightscout
+sudo env PATH=$PATH:/home/nightscout/.nvm/versions/node/v24.19.0/bin pm2 startup systemd -u nightscout --hp /home/nightscout/nightscout
 pm2 status
 pm2 startup
 pm2 save
