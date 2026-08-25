@@ -267,6 +267,7 @@ exit
 
 ```bash
 apt install build-essential checkinstall libssl-dev -y
+npm install pm2 -g
 ```
 
 ## 1.6 Install NodeJS 24.x
@@ -338,7 +339,7 @@ EOF
 npm install pm2 -g
 pm2 cleardump
 env $(cat /home/nightscout/nightscout/my.env) PORT=1337 pm2 start server.js
-sudo env PATH=$PATH:/home/nightscout/.nvm/versions/node/v24.19.0/bin pm2 startup systemd -u nightscout --hp /home/nightscout/nightscout
+sudo env PATH=$PATH:/home/nightscout/.nvm/versions/node/v24.19.0/bin /usr/bin/pm2 startup systemd -u nightscout --hp /home/nightscout
 pm2 status
 pm2 startup
 pm2 save
