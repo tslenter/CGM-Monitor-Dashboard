@@ -1,4 +1,5 @@
 # 1. Server
+
 ````markdown
 Requirements:
 
@@ -19,6 +20,7 @@ The Apache2 configuration uses virtual hosts, which requires DNS to be configure
 
 If the DNS name and Apache2 virtual host configuration do not match, you may see the default/status webpage instead of the Nightscout application.
 ````
+
 ## 1.1 Update system
 
 ```bash
@@ -437,3 +439,35 @@ apache2ctl configtest && a2ensite nightscout.conf && systemctl reload apache2
 ![Empty Nightscout](images/empty-nightscout.png)
 
 # 2. Kiosk / Dashboard
+````markdown
+Software requirements:
+
+CPU: Dual-core
+RAM: 512 MB
+Disk: 50 GB
+Machine ID: 807e6781b48049a884fa7d5094c8b00c
+Boot ID: 800f915e02824627b1fd93f47d1cf7f1
+Operating System: Raspbian GNU/Linux 11 (bullseye)
+Kernel: Linux 6.1.21-v7+
+Architecture: arm
+
+Hardware requirements:
+Display: 7 Inch Touchscreen Display Voor Raspberry Pi Zero (WAV2041)
+Computer: Raspberry Pi Zero 2 W
+Storage: Transcend 16, 32, 64, 128GB Micro SD
+Casing: Build it from a solid piece of wood, but any case will do.
+````
+
+## 2.1 Update system
+
+```bash
+apt-get update --allow-releaseinfo-change && sudo apt-get upgrade -y
+reboot
+````
+
+## 2.2 Install the base
+```bash
+apt update && sudo apt-get install --no-install-recommends xserver-xorg x11-xserver-utils xinit openbox -y
+apt install --no-install-recommends chromium-browser -y
+reboot
+````
