@@ -295,157 +295,121 @@ exit
 su - nightscout
 git clone https://github.com/nightscout/cgm-remote-monitor.git
 ln -s cgm-remote-monitor nightscout
-cd ./nightscout
+cd /home/nightscout/nightscout
 npm install
+exit
 ```
 
-### Enable apache2 modules
-
+## 1.9 Configure nightscout
 ```bash
-sudo a2enmod ssl
-sudo a2enmod headers
-sudo a2enmod rewrite
-sudo a2enmod http2
-sudo a2enmod proxy
-sudo a2enmod proxy_http
-```
-
-### Manage websites
-
-```bash
-cd /etc/apache2/sites-available/
-ls
-sudo a2ensite nightscout.conf
-sudo a2dissite nightscout.conf
-```
-
-
-
-
-
-
-## 6. SSH
-
-```bash
-sudo nano /etc/ssh/sshd_config
-sudo sshd -t
-sudo systemctl restart ssh
-```
-
-
-## 10. Nightscout
-
-### Install
-
-```bash
-cd /opt
-git clone https://github.com/nightscout/cgm-remote-monitor.git
-ln -s cgm-remote-monitor nightscout
-cd /opt/nightscout
-npm install
-```
-
-### Configuration
-
-```bash
-nano my.env
-```
-
-### Test locally
-
-```bash
-curl 127.0.0.1:1337
-```
-
-## 11. PM2 / Nightscout
-
-### Install PM2
-
-```bash
-sudo npm install pm2 -g
-```
-
-### Start Nightscout
-
-```bash
-env $(cat my.env) PORT=1337 pm2 start server.js
-```
-
-### Manage Nightscout
-
-```bash
+su - nightscout
+cd /home/nightscout/nightscout
+tee my.env >/dev/null <<'EOF'
+MONGODB_URI=mongodb://nightscout:my-strong-pw@127.0.0.1:27017/nightscout
+MONGODB_COLLECTION=entries
+DISPLAY_UNITS=mmol/l
+BASE_URL=http://127.0.0.1:1337
+AUTH_DEFAULT_ROLES=denied
+ALARM_HIGH=on
+ALARM_LOW=on
+ALARM_TIMEAGO_URGENT=on
+ALARM_TYPES=simple
+ALARM_TIMEAGO_WARN=on
+ALARM_URGENT_HIGH=on
+ALARM_URGENT_LOW=on
+BRIDGE_SERVER=EU
+NIGHT_MODE=on
+THEME=colors
+TIME_FORMAT=24
+ALARM_TIMEAGO_URGENT_MINS=30
+ALARM_TIMEAGO_WARN_MINS=15
+API_SECRET=my-strong-pw
+BG_HIGH=15
+BG_LOW=3
+BG_TARGET_BOTTOM=4
+BG_TARGET_TOP=10
+BOLUS_RENDER_OVER=1
+BRIDGE_PASSWORD=
+BRIDGE_USER_NAME=
+CUSTOM_TITLE=Nightscout
+ENABLE=careportal%20basal%20dbsize%20rawbg%20iob%20maker%20cob%20bwp%20cage%20iage%20sage%20boluscalc%20pushover%20treatmentnotify%20loop%20pump%20profile%20food%20openaps%20bage%20alexa%20override%20speech%20cors
+SHOW_PLUGINS=careportal%20dbsize
+EOF
+npm install pm2 -g
+env $(cat /home/nightscout/nightscout/my.env) PORT=1337 pm2 start server.js
 pm2 status
-pm2 logs
-pm2 restart nightscout --update-env
-pm2 stop server.js
-pm2 delete server
-```
-
-### Start automatically after reboot
-
-```bash
 pm2 startup
 pm2 save
+exit
 ```
 
-## 12. Nightscout + Apache
-
-### Enable proxy modules
+## 1.10 Configure apache 2 as proxy
 
 ```bash
-sudo a2enmod proxy
-sudo a2enmod proxy_http
+a2enmod ssl
+a2enmod headers
+a2enmod rewrite
+a2enmod http2
+a2enmod proxy
+a2enmod proxy_http
+tee /etc/apache2/sites-available/nightscout.conf > /dev/null <<'EOF'
+# Redirect http => HTTPS
+<VirtualHost *:80>
+        ServerName nightscout.lan.local
+
+        ServerAdmin info@lan.local
+        DocumentRoot /var/www/server-status/public/
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        <Location />
+                RewriteEngine On
+                RewriteCond %{HTTPS}  !=on
+                RewriteRule ^/?(.*) https://%{SERVER_NAME}/ [R,L]
+        </Location>
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName nightscout.lan.local
+
+  Protocols h2 http/1.1
+
+  Header always set Strict-Transport-Security "max-age=63072000"
+
+  SSLEngine on
+  SSLCertificateFile /etc/cert/apache2.crt
+  SSLCertificateKeyFile /etc/cert/apache2.key
+
+  SSLProtocol             all -SSLv3 -TLSv1 -TLSv1.1
+  SSLCipherSuite          ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+  SSLHonorCipherOrder     off
+  SSLSessionTickets       off
+
+  RewriteEngine On
+  RewriteCond %{HTTP:Upgrade} =websocket [NC]
+  RewriteRule /(.*) ws://127.0.0.1:1337/$1 [P,L]
+  RewriteRule .* - [E=upgrade:1]
+
+  SSLProxyEngine on
+  ProxyRequests Off
+
+  <Location "/">
+    ProxyPreserveHost on
+    ProxyPass         http://127.0.0.1:1337/
+    ProxyPassReverse  http://127.0.0.1:1337/
+    RequestHeader     set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
+    RequestHeader     set Connection "upgrade" env=upgrade
+    RequestHeader     set Upgrade "%{HTTP:Upgrade}e" env=upgrade
+  </Location>
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+EOF
+apache2ctl configtest && a2ensite nightscout.conf && systemctl reload apache2
 ```
 
-### Configure virtual host
-
-```bash
-sudo nano /etc/apache2/sites-available/nightscout.remotesyslog.com.conf
-```
-
-### Enable site
-
-```bash
-sudo a2ensite nightscout.remotesyslog.com.conf
-```
-
-### Test and reload Apache
-
-```bash
-sudo apache2ctl configtest
-sudo systemctl reload apache2
-```
-
-## 13. Logs & Troubleshooting
-
-### System logs
-
-```bash
-sudo journalctl
-sudo journalctl -p warning -b
-cat /var/log/syslog
-```
-
-### Nightscout
-
-```bash
-pm2 logs
-pm2 status
-```
-
-## 15. Quick Server Check
-
-```bash
-sudo systemctl status apache2
-sudo systemctl status mongod
-pm2 status
-sudo apache2ctl configtest
-sudo ss -lntp
-sudo ufw status
-curl 127.0.0.1:1337
-```
-
-## Important Paths
+## 1.11 Important Paths
 
 ```text
 /etc/apache2/
