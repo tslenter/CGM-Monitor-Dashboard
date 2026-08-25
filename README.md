@@ -25,6 +25,8 @@ reboot
 ufw allow 'http'
 ufw allow 'https'
 ufw allow 'ssh'
+ufw default deny incoming
+ufw default allow outgoing
 ufw enable
 ````
 
@@ -110,7 +112,6 @@ EOF
 chown -R www-data:www-data /var/www/server-status
 find /var/www -type d -exec chmod 755 {} \;
 find /var/www -type f -exec chmod 644 {} \;
-
 tee /etc/apache2/sites-available/000-server-status.conf >/dev/null <<'EOF'
 <VirtualHost *:80>
     ServerName _default_
@@ -153,13 +154,37 @@ tee /etc/apache2/sites-available/000-server-status.conf >/dev/null <<'EOF'
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
 </VirtualHost>
 EOF
-
 a2dissite 000-default.conf
 a2enmod ssl
 a2enmod headers
 a2ensite 000-server-status.conf
 apache2ctl configtest
 systemctl reload apache2
+```
+
+## 1.4 Install MongoDB 8.3
+```bash
+apt install gnupg curl -y
+curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-8.3.gpg --dearmor
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.3.gpg ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.3 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+apt update
+apt install -y mongodb-org && apt upgrade -y
+systemctl enable mongod
+systemctl edit mongod
+
+START OF EDIT:
+
+[Service]
+ExecStart=
+ExecStart=/usr/bin/mongod --config /etc/mongod.conf
+Environment="GLIBC_TUNABLES=glibc.pthread.rseq=1"
+
+END OF EDIT
+
+systemctl daemon-reload
+systemctl stop mongod
+systemctl start mongod
+systemctl status mongod
 ```
 
 ### Enable apache2 modules
@@ -208,52 +233,6 @@ cd ..
 nano FILE
 ```
 
-### Copy files with SCP
-
-```bash
-scp -r USER@SERVER:/path/* .
-scp -r . USER@SERVER:/path/
-```
-
-## 4. SSL Certificates
-
-```bash
-sudo mkdir -p /etc/cert
-cd /etc/cert
-ls -lah
-sudo chmod 400 remotesyslog.key
-```
-
-### Copy certificates
-
-```bash
-scp -r USER@SERVER:/etc/cert/* .
-```
-
-## 5. Firewall / UFW
-
-```bash
-sudo ufw status
-sudo ufw status numbered
-sudo ufw allow ssh
-sudo ufw allow 'Apache Full'
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
-sudo ufw enable
-```
-
-### Allow SSH from a specific IP
-
-```bash
-sudo ufw allow from YOUR_IP to any port 22
-```
-
-### Delete a rule
-
-```bash
-sudo ufw delete RULE_NUMBER
-```
-
 ## 6. SSH
 
 ```bash
@@ -275,16 +254,7 @@ su - nightscout
 ### Install
 
 ```bash
-sudo apt install gnupg curl -y
 
-curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
-sudo gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg --dearmor
-
-echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.0 multiverse" | \
-sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
-
-sudo apt update
-sudo apt install -y mongodb-org
 ```
 
 ### Manage MongoDB
