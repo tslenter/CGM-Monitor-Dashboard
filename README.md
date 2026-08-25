@@ -471,3 +471,140 @@ apt update && sudo apt-get install --no-install-recommends xserver-xorg x11-xser
 apt install --no-install-recommends chromium-browser -y
 reboot
 ````
+
+## 2.2 Configuration
+```bash
+cat > ~/.profile <<'EOF'
+# ~/.profile: executed by the command interpreter for login shells.
+# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
+# exists.
+# see /usr/share/doc/bash/examples/startup-files for examples.
+# the files are located in the bash-doc package.
+
+# the default umask is set in /etc/profile; for setting the umask
+# for ssh logins, install and configure the libpam-umask package.
+#umask 022
+
+# if running bash
+if [ -n "$BASH_VERSION" ]; then
+    # include .bashrc if it exists
+    if [ -f "$HOME/.bashrc" ]; then
+        . "$HOME/.bashrc"
+    fi
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
+[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && startx -- -nocursor
+EOF
+
+sudo tee /etc/xdg/openbox/autostart > /dev/null <<'EOF'
+# Configuration
+WEBSITE_URL="https://nightscout.lan.local/?token=monitorscr-strong-token"
+
+# Disable screensaver, screen blanking, and power management
+xset s off
+xset s noblank
+xset -dpms
+
+# Auto-detect screen resolution
+RESOLUTION=$(xrandr 2>/dev/null | grep '*' | awk '{print $1}')
+if [ -z "$RESOLUTION" ]; then
+    RESOLUTION="1024x600"  # Default fallback can be ="1280x720"
+fi
+SCREEN_WIDTH=$(echo $RESOLUTION | cut -d 'x' -f1)
+SCREEN_HEIGHT=$(echo $RESOLUTION | cut -d 'x' -f2)
+
+echo "Detected screen resolution: ${SCREEN_WIDTH}x${SCREEN_HEIGHT}"
+
+# Check internet connection using ping before launching Chromium
+if ping -c 1 -W 2 google.com >/dev/null 2>&1; then
+    echo "Internet connected. Proceeding with Chromium launch."
+else
+    echo "No internet connection detected. Exiting."
+fi
+
+# Allow quitting the X server with CTRL-ALT-Backspace
+# setxkbmap -option terminate:ctrl_alt_bksp
+
+# Prevent Chromium restore prompts
+sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' ~/.config/chromium/'Local State'
+sed -i 's/"exit_type":"[^"]\+"/"exit_type":"Normal"/' ~/.config/chromium/Default/Preferences
+
+# Clean up Chromium cache, cookies, and logs
+find ~/.config/chromium/Default/ -type f \( -name "Cookies" -o -name "History" -o -name "*.log" -o -name "*.ldb" -o -name "*.sqlite" \) -delete
+rm -rf ~/.config/chromium/Default/Logs/*
+
+# Clear system logs
+sudo journalctl --vacuum-time=1d
+sudo find /var/log -type f \( -name "*.log" -o -name "*.gz" -o -name "*.1" \) -delete
+sudo truncate -s 0 /var/log/syslog /var/log/dmesg
+
+# Kill any existing Chromium instances
+pkill -9 chromium-browser 2>/dev/null
+pkill -9 chrome 2>/dev/null
+
+# Start Chromium in kiosk mode
+chromium-browser --kiosk --disable-gpu --noerrdialogs --no-memcheck --disable-infobars --disable-features=TranslateUI \
+    --disable-session-crashed-bubble --no-sandbox --disable-notifications --disable-sync-preferences \
+    --no-sandbox --disable-background-mode --disable-popup-blocking --no-first-run \
+    --enable-gpu-rasterization --disable-translate --disable-logging --disable-default-apps \
+    --disable-extensions --disable-crash-reporter --disable-pdf-extension --disable-new-tab-first-run \
+    --disable-dev-shm-usage --start-maximized --mute-audio --disable-crashpad --hide-scrollbars \
+    --ash-hide-cursor --memory-pressure-off --force-device-scale-factor=1 --window-position=0,0 \
+    --window-size=${SCREEN_WIDTH},${SCREEN_HEIGHT} "$WEBSITE_URL" &
+
+if [ $? -eq 0 ]; then
+    echo "Chromium started successfully."
+else
+    echo "Failed to start Chromium."
+    sudo reboot
+fi
+EOF
+
+systemctl ssh status
+systemctl sshd status
+systemctl status ssh
+systemctl disable hciuart
+systemctl enable systemd-timesyncd
+systemctl restart systemd-timesyncd
+
+sudo tee /etc/dphys-swapfile > /dev/null <<'EOF'
+# /etc/dphys-swapfile - user settings for dphys-swapfile package
+# author Neil Franklin, last modification 2010.05.05
+# copyright ETH Zuerich Physics Departement
+#   use under either modified/non-advertising BSD or GPL license
+
+# this file is sourced with . so full normal sh syntax applies
+
+# the default settings are added as commented out CONF_*=* lines
+
+
+# where we want the swapfile to be, this is the default
+#CONF_SWAPFILE=/var/swap
+
+# set size to absolute value, leaving empty (default) then uses computed value
+#   you most likely don't want this, unless you have an special disk situation
+CONF_SWAPSIZE=0
+
+# set size to computed value, this times RAM size, dynamically adapts,
+#   guarantees that there is enough swap without wasting disk space on excess
+#CONF_SWAPFACTOR=2
+
+# restrict size (computed and absolute!) to maximally this limit
+#   can be set to empty for no limit, but beware of filled partitions!
+#   this is/was a (outdated?) 32bit kernel limit (in MBytes), do not overrun it
+#   but is also sensible on 64bit to prevent filling /var or even / partition
+#CONF_MAXSWAP=2048
+EOF
+
+reboot
+````
