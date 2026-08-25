@@ -866,3 +866,137 @@ After completing the configuration, verify that:
 
 > [!NOTE]
 > If the connection between the **Medtronic app and the insulin pump** is regularly interrupted when the phone screen is turned off or after the phone has been idle for some time, check these power settings first.
+
+# 5. Configure Glucose Data for the Smartwatch
+
+To display glucose data on a **Wear OS smartwatch**, DRIPX can be configured to broadcast the glucose values locally on the Android phone.
+
+**GlucoDataHandler (GDH)** can then receive these locally broadcast glucose values and make them available to the smartwatch.
+
+The data flow is:
+
+**Medtronic / CareLink → DRIPX → Local Broadcast → GlucoDataHandler → Wear OS Smartwatch**
+
+> [!IMPORTANT]
+> DRIPX and GlucoDataHandler must be installed on the same Android phone for this local broadcast configuration.
+>
+> GlucoDataHandler is not a standalone Wear OS glucose source. The phone application is required to receive and process the glucose data before it is made available to the smartwatch.
+
+---
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 5.1 Enable Local Broadcast in DRIPX
+
+Open the **DRIPX settings** and enable the option to send glucose data locally.
+
+This allows other compatible applications on the same Android device, such as **GlucoDataHandler**, to receive the glucose values.
+
+<p align="center">
+  <img src="images/DRIPX%20-%20SEND%20LOCAL.jpeg" alt="DRIPX Send Local" width="50%">
+</p>
+
+</td>
+<td width="50%" valign="top">
+
+### 5.2 Configure the Source in GlucoDataHandler
+
+Open **GlucoDataHandler** and navigate to the **Sources** configuration.
+
+Select and enable the local source that corresponds with the broadcast format used by DRIPX.
+
+<p align="center">
+  <img src="images/GlucoDataHandler%20-%20Sources.jpeg" alt="GlucoDataHandler Sources" width="50%">
+</p>
+
+</td>
+</tr>
+</table>
+
+---
+
+## 5.3 Configure the Local Broadcast
+
+Make sure GlucoDataHandler is configured to receive the locally broadcast glucose values from DRIPX.
+
+For an xDrip+-compatible local broadcast, GlucoDataHandler supports receiving glucose values through the **xDrip+ Broadcast locally** source.
+
+When required, make sure the local broadcast configuration allows GlucoDataHandler to receive the data.
+
+<p align="center">
+  <img src="images/GlucoDataHandler%20-%20Configure%20Send%20Local.jpeg" alt="GlucoDataHandler Configure Local Broadcast" width="25%">
+</p>
+
+> [!TIP]
+> If the glucose values are not received by GlucoDataHandler, verify that local broadcasting is enabled in DRIPX and that the corresponding local source is enabled in GlucoDataHandler.
+>
+> For an xDrip+-compatible broadcast, the GlucoDataHandler documentation identifies its Android receiver as:
+>
+> `de.michelinside.glucodatahandler`
+
+---
+
+## 5.4 Configure the Wear OS Smartwatch
+
+Once GlucoDataHandler receives the glucose values on the phone, the data can be displayed on a compatible **Wear OS smartwatch**.
+
+GlucoDataHandler provides **Wear OS complications**. These complications can be added to a compatible watchface to display information such as:
+
+- Current glucose value
+- Glucose trend
+- Delta/change in glucose
+- Timestamp
+- Phone and watch battery information
+
+The exact information that can be displayed depends on the selected complication and watchface.
+
+> [!NOTE]
+> GlucoDataHandler does not provide a complete standalone watchface. It provides Wear OS **complications** that can be placed in complication areas of compatible watchfaces.
+
+---
+
+## 5.5 Result
+
+After the configuration is complete, glucose information from DRIPX can be displayed directly on the smartwatch through GlucoDataHandler.
+
+The final data flow is:
+
+```text
+Medtronic / CareLink
+        │
+        ▼
+      DRIPX
+        │
+        │ Local Broadcast
+        ▼
+GlucoDataHandler
+        │
+        ▼
+ Wear OS Smartwatch
+```
+
+An example of the final result is shown below.
+
+<p align="center">
+  <img src="images/Horloge.png" alt="Glucose Data on Wear OS Smartwatch" width="25%">
+</p>
+
+---
+
+## 5.6 Troubleshooting
+
+If glucose data is not displayed on the smartwatch, verify the following:
+
+- DRIPX is receiving current glucose values.
+- Local broadcasting is enabled in DRIPX.
+- The correct local source is enabled in GlucoDataHandler.
+- GlucoDataHandler is receiving current glucose values on the phone.
+- GlucoDataHandler is installed and configured for Wear OS.
+- The GlucoDataHandler complication has been added to the selected watchface.
+- Bluetooth/Wear OS connectivity between the phone and smartwatch is working.
+- Android battery optimization is not preventing the required applications from running in the background.
+
+> [!TIP]
+> First verify that the current glucose value is visible in **GlucoDataHandler on the phone**. If the value is visible on the phone but not on the smartwatch, the problem is most likely related to the Wear OS configuration or phone-to-watch communication rather than the DRIPX local broadcast.
