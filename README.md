@@ -612,4 +612,10 @@ reboot
 ````
 ## 2.3 Result
 
+### 2.3.1 7 inch diplay
+
 ![Empty Nightscout](https://github.com/tslenter/CGM-Monitor-Dashboard/blob/main/images/7%20inch%20dashboard.png)
+
+### 2.3.2 27 inch diplay
+
+![Empty Nightscout](https://github.com/tslenter/CGM-Monitor-Dashboard/blob/main/images/27inchdashboard.png)
