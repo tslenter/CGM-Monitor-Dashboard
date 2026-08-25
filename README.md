@@ -163,6 +163,7 @@ systemctl reload apache2
 ```
 
 ## 1.4 Install MongoDB 8.3
+
 ```bash
 apt install gnupg curl -y
 curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-8.3.gpg --dearmor
@@ -187,6 +188,7 @@ systemctl status mongod
 ```
 
 ## 1.5 Configure MongoDB 8.3
+
 ```bash
 ulimit -n 64000
 mongosh --port 27017
@@ -253,6 +255,7 @@ exit
 ```
 
 ## 1.6 Create nightscout user
+
 ```bash
 adduser nightscout
 usermod -aG sudo nightscout
@@ -260,13 +263,40 @@ su - nightscout
 exit
 ```
 
-## 1.6 Configure NodeJS
+## 1.7 Install additional packages
+
+```bash
+apt install build-essential checkinstall libssl-dev -y
+```
+
+## 1.6 Install NodeJS 24.x
 
 ```bash
 curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
 sudo apt install -y nodejs
 node -v
 npm -v
+```
+
+## 1.7 Install NVM 24.19.0
+
+```bash
+su - nightscout
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+source ~/.nvm/nvm.sh
+nvm install 24.19.0
+nvm use 24.19.0
+exit
+```
+
+## 1.8 Install nightscout
+
+```bash
+su - nightscout
+git clone https://github.com/nightscout/cgm-remote-monitor.git
+ln -s cgm-remote-monitor nightscout
+cd ./nightscout
+npm install
 ```
 
 ### Enable apache2 modules
@@ -302,33 +332,6 @@ sudo sshd -t
 sudo systemctl restart ssh
 ```
 
-## 7. Users
-
-```bash
-sudo adduser nightscout
-sudo usermod -aG sudo nightscout
-su - nightscout
-```
-
-
-## 9. Node.js / NVM
-
-### Node.js
-
-```bash
-curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
-sudo apt install -y nodejs
-node -v
-npm -v
-```
-
-### NVM
-
-```bash
-source ~/.nvm/nvm.sh
-nvm install 24.19.0
-nvm use 24.19.0
-```
 
 ## 10. Nightscout
 
@@ -430,34 +433,6 @@ pm2 logs
 pm2 status
 ```
 
-### MongoDB
-
-```bash
-sudo systemctl status mongod
-cd /var/log/mongodb/
-ls -lah
-```
-
-### Network
-
-```bash
-sudo ss -lntp
-netstat -tuna
-```
-
-### Packet capture
-
-```bash
-sudo tcpdump -i any port 17010
-sudo tcpdump -i any port 27017
-```
-
-## 14. Reboot
-
-```bash
-sudo reboot
-```
-
 ## 15. Quick Server Check
 
 ```bash
@@ -481,7 +456,4 @@ curl 127.0.0.1:1337
 /var/www/
 /opt/nightscout/
 /home/nightscout/nightscout/
-```
-
-In Notepad, select **Save as type → All Files**, and make sure it doesn't become `server-manual.md.txt`.
 ```
