@@ -1,15 +1,23 @@
 # 1. Server
 ````markdown
 Requirements:
-CPU: Dual core
-RAM: 4GB
-DISK: 50GB
-O/S: Ubuntu 26.04 LTS
-Database: MongoDB 8.3
-Applications: NodeJS 24.19.0
 
-Best is to run a VPS.
-Run commands as root, unless specified otherwise.
+CPU: Dual-core
+RAM: 4 GB
+Disk: 50 GB
+Operating System: Ubuntu 26.04 LTS
+Database: MongoDB 8.3
+Application Runtime: Node.js 24.19.0
+
+It is recommended to run the installation on a VPS.
+
+Run all commands as root, unless otherwise specified.
+
+Wherever a password such as my-strong-pw is shown, replace it with your own strong password. Make sure to also update the corresponding password in all relevant configuration files.
+
+The Apache2 configuration uses virtual hosts, which requires DNS to be configured correctly. In the examples, the hostname is set to nightscout.lan.local. Replace this with the DNS hostname you have configured for your environment.
+
+If the DNS name and Apache2 virtual host configuration do not match, you may see the default/status webpage instead of the Nightscout application.
 ````
 ## 1.1 Update system
 
