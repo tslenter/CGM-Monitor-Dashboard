@@ -626,59 +626,169 @@ reboot
 
 # 3. Configure DRIPX with CareLink and Nightscout
 
-This chapter describes how to configure DRIPX to retrieve patient data from **CareLink** and upload the glucose data to **Nightscout**.
+This chapter describes how to configure **DRIPX** to retrieve patient data from **CareLink** and upload the glucose data to **Nightscout**.
 
-## 3.1 Configure CareLink
+---
 
-Open DRIPX and configure the CareLink connection and login credentials.
+<table>
+<tr>
+<td width="50%" valign="top">
 
-![DRIPX - CareLink Login](images/DRIPX%20-%20LOGIN%20and%20CareLink%20option.jpeg)
+### 3.1 Configure CareLink
 
-## 3.2 Select the Patient Data Source
+Open DRIPX and configure the **CareLink** connection and login credentials.
 
-Configure **CareLink** as the source for the patient's glucose data.
+<p align="center">
+  <img src="images/DRIPX%20-%20LOGIN%20and%20CareLink%20option.jpeg" alt="DRIPX CareLink Login" width="50%">
+</p>
 
-![DRIPX - Source Selection](images/DRIPX%20-%20source%20selection.jpeg)
+</td>
+<td width="50%" valign="top">
 
-## 3.3 Configure the Patient Name
+### 3.2 Select the Patient Data Source
 
-Enter or select the CareLink patient name.
+Select **CareLink** as the source for the patient's glucose data.
 
-![DRIPX - CareLink Patient Name](images/DRIPX%20-%20CareLink%20Patientname.jpeg)
+<p align="center">
+  <img src="images/DRIPX%20-%20source%20selection.jpeg" alt="DRIPX Source Selection" width="50%">
+</p>
 
-## 3.4 Configure the Patient Country
+</td>
+</tr>
+</table>
 
-Select the country associated with the patient's CareLink account.
+<table>
+<tr>
+<td width="50%" valign="top">
 
-![DRIPX - Country Selection](images/DRIPX%20-%20Countru%20Selection.jpeg)
+### 3.3 Configure the Patient Name
 
-## 3.5 Configure DRIPX Settings for Nightscout Upload
+Enter or select the **CareLink patient name**.
 
-After CareLink has been configured, DRIPX can be configured to upload the glucose data to **Nightscout**.
+<p align="center">
+  <img src="images/DRIPX%20-%20CareLink%20Patientname.jpeg" alt="DRIPX CareLink Patient Name" width="50%">
+</p>
 
-Open the DRIPX settings to configure the Nightscout upload.
+</td>
+<td width="50%" valign="top">
 
-![DRIPX - Settings](images/DRIPX%20-%20Settings.jpeg)
+### 3.4 Configure the Patient Country
 
-## 3.6 Configure Cloud Upload
+Select the country associated with the patient's **CareLink account**.
 
-Enable and configure the cloud upload functionality.
+<p align="center">
+  <img src="images/DRIPX%20-%20Countru%20Selection.jpeg" alt="DRIPX Country Selection" width="50%">
+</p>
 
-![DRIPX - Cloud Upload](images/DRIPX%20-%20Cloud%20upload.jpeg)
+</td>
+</tr>
+</table>
 
-## 3.7 Configure the REST API
+---
 
-Select and configure the **REST API** option for uploading the data to Nightscout.
+<table>
+<tr>
+<td width="50%" valign="top">
 
-![DRIPX - REST API](images/DRIPX%20-%20REST-API.jpeg)
+### 3.5 Configure Nightscout Upload
 
-## 3.8 Configure the Nightscout Base URL
+Open the **DRIPX Settings** to configure the upload to Nightscout.
 
-Enter the Nightscout Base URL.
+<p align="center">
+  <img src="images/DRIPX%20-%20Settings.jpeg" alt="DRIPX Settings" width="50%">
+</p>
 
-![DRIPX - Nightscout Base URL](images/DRIPX%20-%20Nightscout%20base%20URL.jpeg)
+</td>
+<td width="50%" valign="top">
 
-The URL should use the following format:
+### 3.6 Configure Cloud Upload
+
+Enable and configure the **Cloud Upload** functionality.
+
+<p align="center">
+  <img src="images/DRIPX%20-%20Cloud%20upload.jpeg" alt="DRIPX Cloud Upload" width="50%">
+</p>
+
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 3.7 Configure the REST API
+
+Select and configure the **REST API** option for uploading the glucose data to Nightscout.
+
+<p align="center">
+  <img src="images/DRIPX%20-%20REST-API.jpeg" alt="DRIPX REST API" width="50%">
+</p>
+
+</td>
+<td width="50%" valign="top">
+
+### 3.8 Configure the Nightscout Base URL
+
+Enter the **Nightscout Base URL**.
+
+<p align="center">
+  <img src="images/DRIPX%20-%20Nightscout%20base%20URL.jpeg" alt="DRIPX Nightscout Base URL" width="50%">
+</p>
+
+</td>
+</tr>
+</table>
+
+The Nightscout URL should use the following format:
 
 ```text
 https://token@hostname/api/v1/
+```
+
+Where:
+
+- `token` is your Nightscout API token.
+- `hostname` is the hostname of your Nightscout instance.
+
+For example:
+
+```text
+https://YOUR_API_TOKEN@your-nightscout.example.com/api/v1/
+```
+
+> [!WARNING]
+> Never publish your real Nightscout API token in screenshots, documentation, GitHub issues, or commits.
+
+---
+
+## 3.9 Example Results on the Phone
+
+The following screenshots show examples of the Nightscout dashboard on a phone.
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 3.9.1 Without Login
+
+Example of the Nightscout dashboard when authentication is not required.
+
+<p align="center">
+  <img src="images/DRIP-X-Telefoon-geenlogin.png" alt="Nightscout without login" width="50%">
+</p>
+
+</td>
+<td width="50%" valign="top">
+
+### 3.9.2 With Login
+
+Example of the Nightscout dashboard when authentication is enabled.
+
+<p align="center">
+  <img src="images/DRIP-X-Telefoon-login.png" alt="Nightscout with login" width="50%">
+</p>
+
+</td>
+</tr>
+</table>
