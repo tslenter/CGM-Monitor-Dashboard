@@ -776,3 +776,89 @@ Example of the Nightscout dashboard when loged in.
 </td>
 </tr>
 </table>
+
+# 4. Configure Power Settings
+
+To keep the **pump connected** and ensure that DRIPX can continue running reliably in the background, the phone's **power and battery management settings** must be configured correctly.
+
+Android power-saving features may restrict background activity when the phone is not actively being used. This can interrupt the connection with the pump and prevent DRIPX from continuously receiving and uploading glucose data.
+
+The following settings should therefore be configured to prevent Android from stopping or restricting DRIPX.
+
+> [!IMPORTANT]
+> These power settings are required to help keep the pump connected. The exact names and locations of these settings may differ depending on the Android version and phone manufacturer.
+
+---
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 4.1 Open the Power Settings
+
+Open the phone's **Power/Battery settings** and locate the settings that control background activity and power optimization.
+
+<p align="center">
+  <img src="images/engergie-uit1.jpg" alt="Android Power Settings - Step 1" width="50%">
+</p>
+
+</td>
+<td width="50%" valign="top">
+
+### 4.2 Configure Battery Optimization
+
+Configure the battery optimization settings so that DRIPX is not restricted by Android's power-saving functionality.
+
+<p align="center">
+  <img src="images/engergie-uit2.jpg" alt="Android Power Settings - Step 2" width="50%">
+</p>
+
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 4.3 Allow Background Activity
+
+Make sure that DRIPX is allowed to continue running in the background. This is important for maintaining the connection with the pump when the phone screen is turned off.
+
+<p align="center">
+  <img src="images/engergie-uit3.jpg" alt="Android Power Settings - Step 3" width="50%">
+</p>
+
+</td>
+<td width="50%" valign="top">
+
+### 4.4 Disable Power Restrictions
+
+Disable any remaining power or battery restrictions that could stop DRIPX from running continuously.
+
+<p align="center">
+  <img src="images/engergie-uit4.jpg" alt="Android Power Settings - Step 4" width="50%">
+</p>
+
+</td>
+</tr>
+</table>
+
+---
+
+## 4.5 Why These Settings Are Important
+
+DRIPX needs to remain active in the background to maintain communication with the **pump**.
+
+If Android puts DRIPX to sleep or restricts its background activity, the connection with the pump may be interrupted. As a result, glucose data may no longer be received or uploaded to Nightscout until the application becomes active again.
+
+After completing the configuration, verify that:
+
+- DRIPX is excluded from battery optimization.
+- Background activity is allowed.
+- Power-saving restrictions for DRIPX are disabled.
+- DRIPX remains active when the phone screen is turned off.
+- The connection with the pump remains active.
+
+> [!NOTE]
+> If the pump regularly loses its connection when the phone screen is turned off or after the phone has been idle for some time, check these power settings first.
