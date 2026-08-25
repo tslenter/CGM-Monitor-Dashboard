@@ -180,6 +180,10 @@ ExecStart=/usr/bin/mongod --config /etc/mongod.conf
 Environment="GLIBC_TUNABLES=glibc.pthread.rseq=1"
 
 END OF EDIT
+systemctl daemon-reload
+systemctl stop mongod
+systemctl start mongod
+systemctl status mongod
 ```
 
 ## 1.4 Configure MongoDB 8.3
