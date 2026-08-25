@@ -610,3 +610,6 @@ EOF
 
 reboot
 ````
+## 2.3 Result
+
+![Empty Nightscout](https://github.com/tslenter/CGM-Monitor-Dashboard/blob/main/images/7%20inch%20dashboard.png)
