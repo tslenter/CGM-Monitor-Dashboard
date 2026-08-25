@@ -1,3 +1,16 @@
+# 1. Server
+````markdown
+Requirements:
+CPU: Dual core
+RAM: 4GB
+DISK: 50GB
+O/S: Ubuntu 26.04 LTS
+Database: MongoDB 8.3
+Applications: NodeJS 24.19.0
+
+Best is to run a VPS.
+````
+
 ````markdown
 # Ubuntu / Apache / MongoDB / Nightscout Command Manual
 
