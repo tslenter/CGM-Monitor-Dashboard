@@ -435,3 +435,5 @@ apache2ctl configtest && a2ensite nightscout.conf && systemctl reload apache2
 ## 1.12 Result
 
 ![Empty Nightscout](images/empty-nightscout.png)
+
+# 2. Kiosk / Dashboard
