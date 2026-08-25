@@ -746,22 +746,6 @@ The Nightscout URL should use the following format:
 https://token@hostname/api/v1/
 ```
 
-Where:
-
-- `token` is your Nightscout API token.
-- `hostname` is the hostname of your Nightscout instance.
-
-For example:
-
-```text
-https://YOUR_API_TOKEN@your-nightscout.example.com/api/v1/
-```
-
-> [!WARNING]
-> Never publish your real Nightscout API token in screenshots, documentation, GitHub issues, or commits.
-
----
-
 ## 3.9 Example Results on the Phone
 
 The following screenshots show examples of the Nightscout dashboard on a phone.
@@ -772,7 +756,7 @@ The following screenshots show examples of the Nightscout dashboard on a phone.
 
 ### 3.9.1 Without Login
 
-Example of the Nightscout dashboard when authentication is not required.
+Example of the Nightscout dashboard on lockscreen.
 
 <p align="center">
   <img src="images/DRIP-X-Telefoon-geenlogin.png" alt="Nightscout without login" width="50%">
@@ -783,7 +767,7 @@ Example of the Nightscout dashboard when authentication is not required.
 
 ### 3.9.2 With Login
 
-Example of the Nightscout dashboard when authentication is enabled.
+Example of the Nightscout dashboard when loged in.
 
 <p align="center">
   <img src="images/DRIP-X-Telefoon-login.png" alt="Nightscout with login" width="50%">
