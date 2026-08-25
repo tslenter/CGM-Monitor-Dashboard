@@ -1,3 +1,7 @@
+# Design
+
+![Empty Nightscout](https://github.com/tslenter/CGM-Monitor-Dashboard/blob/main/images/Design.png)
+
 # 1. Server
 
 ````markdown
