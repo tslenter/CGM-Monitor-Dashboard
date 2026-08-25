@@ -4,7 +4,7 @@ The current design is for Medtronic, but with a few small changes, it can be ada
 
 ![Empty Nightscout](https://github.com/tslenter/CGM-Monitor-Dashboard/blob/main/images/Design.png)
 
-# 1. Server
+# 1. Nightscout server
 
 ````markdown
 Requirements:
