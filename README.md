@@ -166,7 +166,7 @@ systemctl reload apache2
 ```bash
 apt install gnupg curl -y
 curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-8.3.gpg --dearmor
-echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.3.gpg ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.3 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.3.gpg ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.3 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-8.3.list
 apt update
 apt install -y mongodb-org && apt upgrade -y
 systemctl enable mongod
@@ -180,11 +180,72 @@ ExecStart=/usr/bin/mongod --config /etc/mongod.conf
 Environment="GLIBC_TUNABLES=glibc.pthread.rseq=1"
 
 END OF EDIT
+```
 
+## 1.4 Configure MongoDB 8.3
+```bash
+ulimit -n 64000
+mongosh --port 27017
+use admin
+db.createUser({user: "administrator", pwd: "my-strong-pw", roles: [ { role: "userAdminAnyDatabase", db: "admin" }] })
+db.updateUser(
+  "administrator",
+  { pwd: "my-strong-pw" }
+)
+exit
+tee /etc/mongod.conf >/dev/null <<'EOF'
+# mongod.conf
+
+# for documentation of all options, see:
+#   http://docs.mongodb.org/manual/reference/configuration-options/
+
+# Where and how to store data.
+storage:
+  dbPath: /var/lib/mongodb
+#  engine:
+#  wiredTiger:
+
+# where to write logging data.
+systemLog:
+  destination: file
+  logAppend: true
+  path: /var/log/mongodb/mongod.log
+
+# network interfaces
+net:
+  port: 27017
+  bindIp: 127.0.0.1
+
+
+# how the process runs
+processManagement:
+  timeZoneInfo: /usr/share/zoneinfo
+
+security:
+  authorization: enabled
+
+#operationProfiling:
+
+#replication:
+
+#sharding:
+
+## Enterprise-Only Options:
+
+#auditLog:
+EOF
 systemctl daemon-reload
 systemctl stop mongod
 systemctl start mongod
 systemctl status mongod
+mongosh --port 27017
+
+mongosh -u administrator -p --authenticationDatabase admin
+use nightscout
+db.createUser({user: "nightscout", pwd: "my-strong-pw", roles: [ { role: "readWrite", db: "nightscout" }]})
+exit
+mongosh -u nightscout -p --authenticationDatabase nightscout
+exit
 ```
 
 ### Enable apache2 modules
