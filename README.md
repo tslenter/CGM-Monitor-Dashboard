@@ -186,7 +186,7 @@ systemctl start mongod
 systemctl status mongod
 ```
 
-## 1.4 Configure MongoDB 8.3
+## 1.5 Configure MongoDB 8.3
 ```bash
 ulimit -n 64000
 mongosh --port 27017
@@ -252,6 +252,23 @@ mongosh -u nightscout -p --authenticationDatabase nightscout
 exit
 ```
 
+## 1.6 Create nightscout user
+```bash
+adduser nightscout
+usermod -aG sudo nightscout
+su - nightscout
+exit
+```
+
+## 1.6 Configure NodeJS
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
+sudo apt install -y nodejs
+node -v
+npm -v
+```
+
 ### Enable apache2 modules
 
 ```bash
@@ -272,31 +289,10 @@ sudo a2ensite nightscout.conf
 sudo a2dissite nightscout.conf
 ```
 
-## 3. Website Files
 
-### Create directories
 
-```bash
-sudo mkdir -p /var/www/nightscout/public
-sudo mkdir -p /var/www/server-status/public
-```
 
-### Ownership & permissions
 
-```bash
-sudo chown -R www-data:www-data /var/www/
-sudo find /var/www -type d -exec chmod 755 {} \;
-sudo find /var/www -type f -exec chmod 644 {} \;
-```
-
-### File management
-
-```bash
-ls -lah
-cd /path/to/directory
-cd ..
-nano FILE
-```
 
 ## 6. SSH
 
@@ -314,37 +310,6 @@ sudo usermod -aG sudo nightscout
 su - nightscout
 ```
 
-## 8. MongoDB
-
-### Install
-
-```bash
-
-```
-
-### Manage MongoDB
-
-```bash
-sudo systemctl enable --now mongod
-sudo systemctl status mongod
-sudo systemctl restart mongod
-```
-
-### Configure MongoDB
-
-```bash
-sudo nano /etc/mongod.conf
-sudo systemctl edit mongod
-sudo systemctl daemon-reload
-```
-
-### MongoDB shell
-
-```bash
-mongosh --port 27017
-mongosh -u administrator -p --authenticationDatabase admin
-mongosh -u nightscout -p --authenticationDatabase nightscout
-```
 
 ## 9. Node.js / NVM
 
