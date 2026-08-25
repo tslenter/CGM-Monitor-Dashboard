@@ -623,3 +623,62 @@ reboot
 ### 2.3.2 27 inch diplay
 
 ![Empty Nightscout](https://github.com/tslenter/CGM-Monitor-Dashboard/blob/main/images/27inchdashboard.png)
+
+# 3. Configure DRIPX with CareLink and Nightscout
+
+This chapter describes how to configure DRIPX to retrieve patient data from **CareLink** and upload the glucose data to **Nightscout**.
+
+## 3.1 Configure CareLink
+
+Open DRIPX and configure the CareLink connection and login credentials.
+
+![DRIPX - CareLink Login](images/DRIPX%20-%20LOGIN%20and%20CareLink%20option.jpeg)
+
+## 3.2 Select the Patient Data Source
+
+Configure **CareLink** as the source for the patient's glucose data.
+
+![DRIPX - Source Selection](images/DRIPX%20-%20source%20selection.jpeg)
+
+## 3.3 Configure the Patient Name
+
+Enter or select the CareLink patient name.
+
+![DRIPX - CareLink Patient Name](images/DRIPX%20-%20CareLink%20Patientname.jpeg)
+
+## 3.4 Configure the Patient Country
+
+Select the country associated with the patient's CareLink account.
+
+![DRIPX - Country Selection](images/DRIPX%20-%20Countru%20Selection.jpeg)
+
+## 3.5 Configure DRIPX Settings for Nightscout Upload
+
+After CareLink has been configured, DRIPX can be configured to upload the glucose data to **Nightscout**.
+
+Open the DRIPX settings to configure the Nightscout upload.
+
+![DRIPX - Settings](images/DRIPX%20-%20Settings.jpeg)
+
+## 3.6 Configure Cloud Upload
+
+Enable and configure the cloud upload functionality.
+
+![DRIPX - Cloud Upload](images/DRIPX%20-%20Cloud%20upload.jpeg)
+
+## 3.7 Configure the REST API
+
+Select and configure the **REST API** option for uploading the data to Nightscout.
+
+![DRIPX - REST API](images/DRIPX%20-%20REST-API.jpeg)
+
+## 3.8 Configure the Nightscout Base URL
+
+Enter the Nightscout Base URL.
+
+![DRIPX - Nightscout Base URL](images/DRIPX%20-%20Nightscout%20base%20URL.jpeg)
+
+The URL should use the following format:
+
+```text
+https://token@hostname/api/v1/
