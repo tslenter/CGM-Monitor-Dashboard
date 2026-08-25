@@ -779,7 +779,7 @@ Example of the Nightscout dashboard when loged in.
 </tr>
 </table>
 
-# 4. Configure Power Settings
+# 4. Configure Power Settings (Samsung S25 Ultra)
 
 To keep the **Medtronic app connected to the insulin pump**, the phone's **power and battery management settings** must be configured correctly.
 
