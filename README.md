@@ -434,4 +434,4 @@ apache2ctl configtest && a2ensite nightscout.conf && systemctl reload apache2
 ```
 ## 1.12 Result
 
-![Empty Nightscout](https://raw.githubusercontent.com/tslenter/CGM-Monitor-Dashboard/main/images/empty-nightscout.png)
+![Empty Nightscout](images/empty-nightscout.png)
