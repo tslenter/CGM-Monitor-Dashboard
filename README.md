@@ -1,5 +1,7 @@
 # Design for Medtronic 780G
 
+The current design is for Medtronic, but with a few small changes, it can be adapted for Abbott or Dexcom.
+
 ![Empty Nightscout](https://github.com/tslenter/CGM-Monitor-Dashboard/blob/main/images/Design.png)
 
 # 1. Server
