@@ -1,4 +1,4 @@
-# Design
+# Design for Medtronic 780G
 
 ![Empty Nightscout](https://github.com/tslenter/CGM-Monitor-Dashboard/blob/main/images/Design.png)
 
