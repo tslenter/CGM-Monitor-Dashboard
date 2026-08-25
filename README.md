@@ -456,6 +456,8 @@ Display: 7 Inch Touchscreen Display Voor Raspberry Pi Zero (WAV2041)
 Computer: Raspberry Pi Zero 2 W
 Storage: Transcend 16, 32, 64, 128GB Micro SD
 Casing: Build it from a solid piece of wood, but any case will do.
+
+Adjust the WEBSITE_URL="https://nightscout.lan.local/?token=monitorscr-strong-token" with the URL of your own server.
 ````
 
 ## 2.1 Update system
