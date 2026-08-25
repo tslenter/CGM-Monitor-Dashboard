@@ -9,19 +9,14 @@ Database: MongoDB 8.3
 Applications: NodeJS 24.19.0
 
 Best is to run a VPS.
+Run commands as root, unless specified otherwise.
 ````
-
-````markdown
-# Ubuntu / Apache / MongoDB / Nightscout Command Manual
-
-## 1. System & Packages
+## 1.1 System & Packages
 
 ```bash
-hostnamectl
-ip addr show
-sudo apt update
-sudo apt upgrade -y
-sudo apt autoremove
+apt update && apt upgrade -y
+apt autoremove
+reboot
 ````
 
 ## 2. Apache
