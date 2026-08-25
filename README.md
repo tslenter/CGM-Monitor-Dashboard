@@ -779,14 +779,16 @@ Example of the Nightscout dashboard when loged in.
 
 # 4. Configure Power Settings
 
-To keep the **pump connected** and ensure that DRIPX can continue running reliably in the background, the phone's **power and battery management settings** must be configured correctly.
+To keep the **Medtronic app connected to the insulin pump**, the phone's **power and battery management settings** must be configured correctly.
 
-Android power-saving features may restrict background activity when the phone is not actively being used. This can interrupt the connection with the pump and prevent DRIPX from continuously receiving and uploading glucose data.
+Android power-saving features may restrict or stop applications that are running in the background. If the **Medtronic app** is restricted, the connection between the Medtronic app and the insulin pump may be interrupted.
 
-The following settings should therefore be configured to prevent Android from stopping or restricting DRIPX.
+The following power settings should therefore be configured to allow the Medtronic app to continue running in the background.
 
 > [!IMPORTANT]
-> These power settings are required to help keep the pump connected. The exact names and locations of these settings may differ depending on the Android version and phone manufacturer.
+> These settings are intended to help maintain the connection between the **Medtronic app and the insulin pump**. They are not related to the connection between DRIPX and CareLink.
+>
+> The exact names and locations of these settings may differ depending on the Android version and phone manufacturer.
 
 ---
 
@@ -796,7 +798,7 @@ The following settings should therefore be configured to prevent Android from st
 
 ### 4.1 Open the Power Settings
 
-Open the phone's **Power/Battery settings** and locate the settings that control background activity and power optimization.
+Open the phone's **Power/Battery settings** and locate the settings that control background activity and power management.
 
 <p align="center">
   <img src="images/engergie-uit1.jpg" alt="Android Power Settings - Step 1" width="50%">
@@ -807,7 +809,7 @@ Open the phone's **Power/Battery settings** and locate the settings that control
 
 ### 4.2 Configure Battery Optimization
 
-Configure the battery optimization settings so that DRIPX is not restricted by Android's power-saving functionality.
+Configure the battery optimization settings so that the **Medtronic app** is not restricted by Android's power-saving functionality.
 
 <p align="center">
   <img src="images/engergie-uit2.jpg" alt="Android Power Settings - Step 2" width="50%">
@@ -823,7 +825,9 @@ Configure the battery optimization settings so that DRIPX is not restricted by A
 
 ### 4.3 Allow Background Activity
 
-Make sure that DRIPX is allowed to continue running in the background. This is important for maintaining the connection with the pump when the phone screen is turned off.
+Make sure that the **Medtronic app** is allowed to continue running in the background.
+
+This is important for maintaining communication between the Medtronic app and the insulin pump when the phone screen is turned off.
 
 <p align="center">
   <img src="images/engergie-uit3.jpg" alt="Android Power Settings - Step 3" width="50%">
@@ -834,7 +838,7 @@ Make sure that DRIPX is allowed to continue running in the background. This is i
 
 ### 4.4 Disable Power Restrictions
 
-Disable any remaining power or battery restrictions that could stop DRIPX from running continuously.
+Disable any remaining power or battery restrictions that could prevent the **Medtronic app** from running continuously in the background.
 
 <p align="center">
   <img src="images/engergie-uit4.jpg" alt="Android Power Settings - Step 4" width="50%">
@@ -848,17 +852,17 @@ Disable any remaining power or battery restrictions that could stop DRIPX from r
 
 ## 4.5 Why These Settings Are Important
 
-DRIPX needs to remain active in the background to maintain communication with the **pump**.
+The **Medtronic app must remain active in the background** to maintain its connection with the insulin pump.
 
-If Android puts DRIPX to sleep or restricts its background activity, the connection with the pump may be interrupted. As a result, glucose data may no longer be received or uploaded to Nightscout until the application becomes active again.
+Android may automatically limit background applications to reduce battery consumption. When this happens to the Medtronic app, communication between the **Medtronic app and the pump** may be interrupted.
 
 After completing the configuration, verify that:
 
-- DRIPX is excluded from battery optimization.
-- Background activity is allowed.
-- Power-saving restrictions for DRIPX are disabled.
-- DRIPX remains active when the phone screen is turned off.
-- The connection with the pump remains active.
+- The Medtronic app is excluded from battery optimization.
+- Background activity for the Medtronic app is allowed.
+- Power-saving restrictions for the Medtronic app are disabled.
+- The Medtronic app can continue running when the phone screen is turned off.
+- The connection between the Medtronic app and the insulin pump remains active.
 
 > [!NOTE]
-> If the pump regularly loses its connection when the phone screen is turned off or after the phone has been idle for some time, check these power settings first.
+> If the connection between the **Medtronic app and the insulin pump** is regularly interrupted when the phone screen is turned off or after the phone has been idle for some time, check these power settings first.
