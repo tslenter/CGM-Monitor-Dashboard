@@ -999,6 +999,13 @@ If glucose data is not displayed on the smartwatch, verify the following:
 - The GlucoDataHandler complication has been added to the selected watchface.
 - Bluetooth/Wear OS connectivity between the phone and smartwatch is working.
 - Android battery optimization is not preventing the required applications from running in the background.
-
 > [!TIP]
+
+## 5.7 Used Resources
+```
+https://www.waveshare.com/wiki/Zero-DISP-7A
+https://read.sanjaysikdar.dev/raspberry-pi-zero-2w-kiosk
+http://www.undr.com/understatement/2024/free_kiosk_dashboard_setup_for_raspi/index.html
+```
+
 > First verify that the current glucose value is visible in **GlucoDataHandler on the phone**. If the value is visible on the phone but not on the smartwatch, the problem is most likely related to the Wear OS configuration or phone-to-watch communication rather than the DRIPX local broadcast.
