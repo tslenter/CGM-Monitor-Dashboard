@@ -444,7 +444,9 @@ apache2ctl configtest && a2ensite nightscout.conf && systemctl reload apache2
 
 ![Empty Nightscout](images/empty-nightscout.png)
 
-# 2. Raspberry Pi OS Bullseye  — Nightscout Kiosk Client / Dashboard
+# 2 Dashboard / Client
+
+## 2.1 Raspberry Pi OS Bullseye  — Nightscout Kiosk Client / Dashboard
 ````markdown
 Software requirements:
 
@@ -466,21 +468,21 @@ Casing: Build it from a solid piece of wood, but any case will do.
 Adjust the WEBSITE_URL="https://nightscout.lan.local/?token=monitorscr-strong-token" with the URL of your own server.
 ````
 
-## 2.1 Update system
+## 2.1.1 Update system
 
 ```bash
 apt-get update --allow-releaseinfo-change && sudo apt-get upgrade -y
 reboot
 ````
 
-## 2.2 Install the base
+### 2.1.2 Install the base
 ```bash
 apt update && sudo apt-get install --no-install-recommends xserver-xorg x11-xserver-utils xinit openbox -y
 apt install --no-install-recommends chromium-browser -y
 reboot
 ````
 
-## 2.2 Configuration
+### 2.1.3 Configuration
 ```bash
 cat > ~/.profile <<'EOF'
 # ~/.profile: executed by the command interpreter for login shells.
@@ -616,7 +618,7 @@ EOF
 
 reboot
 ````
-## 2.3 Raspberry Pi OS Trixie — Nightscout Kiosk Client / Dashboard
+## 2.2 Raspberry Pi OS Trixie — Nightscout Kiosk Client / Dashboard
 
 > **Platform:** Raspberry Pi Zero 2 W (512 MB RAM) · Raspberry Pi OS Trixie Lite (32-bit) · Waveshare 7-inch HDMI touchscreen (1024×600).
 >
@@ -624,7 +626,7 @@ reboot
 
 This section describes the Trixie-based Nightscout client installation. All commands assume the regular Linux user is `tom` with home directory `/home/tom`, unless stated otherwise. Replace both values if your installation uses a different account. Run the commands as `tom` over SSH, not from a root shell, except where `sudo` is explicitly used.
 
-### 2.3.1 Install Raspberry Pi OS Trixie Lite
+### 2.2.1 Install Raspberry Pi OS Trixie Lite
 
 Use Raspberry Pi Imager to install **Raspberry Pi OS Lite (32-bit) — Trixie**. Configure your Wi-Fi network, Wi-Fi country, SSH access, username (`tom` in this example), hostname (`lumon0001` in this example), and time zone (`Europe/Amsterdam`).
 
@@ -639,7 +641,7 @@ sudo reboot
 
 If `.local` name resolution is unavailable, connect using the Raspberry Pi's IP address instead. Reconnect after the reboot before continuing.
 
-### 2.3.2 Verify the Waveshare HDMI display
+### 2.2.2 Verify the Waveshare HDMI display
 
 Check that HDMI is connected and the display advertises 1024×600:
 
@@ -652,7 +654,7 @@ Expected: `connected` and a `1024x600` mode. The tested Trixie installation uses
 
 The DRM connector path can differ between installations; inspect `/sys/class/drm/` if the path above does not exist.
 
-### 2.3.3 Install X11, Openbox, and Chromium
+### 2.2.3 Install X11, Openbox, and Chromium
 
 Install the minimal graphical stack without a full desktop environment:
 
@@ -665,7 +667,7 @@ sudo apt install -y \
   chromium ca-certificates
 ```
 
-#### 2.3.3.1 Fix the black screen using Xorg `fbdev`
+#### 2.2.3.1 Fix the black screen using Xorg `fbdev`
 
 On the tested Waveshare setup, the Linux console worked, but `startx` produced a black screen. Xorg was using the `modesetting` driver with `glamor` acceleration. Forcing the `fbdev` driver resolved the issue:
 
@@ -682,7 +684,7 @@ EOF_XORG
 
 **Keep this file in place on the tested hardware.** It is the key display fix for this setup.
 
-### 2.3.4 Configure the Nightscout URL
+### 2.2.4 Configure the Nightscout URL
 
 Create the configuration directory and edit the URL file:
 
@@ -703,7 +705,7 @@ Include an access token only if your Nightscout deployment requires one. **Never
 chmod 600 /home/tom/.config/nightscout-kiosk/url
 ```
 
-### 2.3.5 Create the Chromium kiosk launcher
+### 2.2.5 Create the Chromium kiosk launcher
 
 Create the browser launcher using this copy-and-paste console block:
 
@@ -765,7 +767,7 @@ chmod 700 /home/tom/.config/nightscout-kiosk/start-browser.sh
 
 On the tested installation, `--no-memcheck` suppressed Chromium's low-memory warning. We deliberately do **not** use `--no-sandbox` or install `unclutter`.
 
-### 2.3.6 Configure X11 and test the kiosk
+### 2.2.6 Configure X11 and test the kiosk
 
 Create `.xinitrc` and ensure the files belong to the kiosk user:
 
@@ -788,7 +790,7 @@ startx
 
 Nightscout should open full-screen. Do **not** run `startx` as root.
 
-### 2.3.7 Enable automatic login and kiosk startup
+### 2.2.7 Enable automatic login and kiosk startup
 
 Use `agetty` autologin on `tty1`, then launch X11 from the Bash login profile. The Xorg `-nocursor` option hides the pointer without `unclutter`.
 
@@ -826,7 +828,7 @@ sudo reboot
 
 **Verification:** Nightscout should appear automatically after reboot. The autostart settings were configured during the original setup, but a successful post-reboot check was not separately confirmed.
 
-### 2.3.8 Disable Bluetooth
+### 2.2.8 Disable Bluetooth
 
 If Bluetooth is not required, disable only its service:
 
@@ -845,7 +847,7 @@ inactive
 
 Leave Wi-Fi, NetworkManager, SSH, Avahi, Cron, and the other required system services enabled.
 
-### 2.3.9 Schedule a weekly reboot: Monday at 02:00
+### 2.2.9 Schedule a weekly reboot: Monday at 02:00
 
 Create a Cron entry to reboot the kiosk every Monday at 02:00 local time:
 
@@ -862,7 +864,7 @@ cat /etc/cron.d/nightscout-reboot
 
 Cron was confirmed as `active`, and the time zone was confirmed as `Europe/Amsterdam`. The first actual scheduled reboot had not yet been independently verified.
 
-### 2.3.10 Manage swap on Trixie
+### 2.2.10 Manage swap on Trixie
 
 The tested Trixie installation uses `rpi-swap` with zram. Swap was successfully disabled **temporarily**:
 
@@ -881,7 +883,7 @@ man swap.conf
 
 **Caution:** the Raspberry Pi Zero 2 W has only 512 MB of RAM. Without swap, Chromium may terminate under memory pressure. Disabling swap is optional; test stability before relying on it.
 
-### 2.3.11 Diagnostics and maintenance
+### 2.2.11 Diagnostics and maintenance
 
 Use the following commands to inspect the running kiosk:
 
@@ -905,7 +907,7 @@ cat /etc/cron.d/nightscout-reboot
 getent hosts nightscout.lan.local
 ```
 
-#### 2.3.11.1 Common troubleshooting cases
+#### 2.2.11.1 Common troubleshooting cases
 
 - **Black screen after `startx`:** check `/etc/X11/xorg.conf.d/20-waveshare-fbdev.conf`.
 - **Chromium does not start:** check `command -v chromium`, the kiosk directory, and ownership of files under `/home/tom`.
@@ -913,13 +915,13 @@ getent hosts nightscout.lan.local
 - **Mouse cursor visible:** verify `-nocursor` is included in the X11 startup command.
 - **Nightscout cannot be reached:** check Wi-Fi, DNS resolution, server availability, and the access token.
 
-### 2.3.12 Security notes
+### 2.2.12 Security notes
 
 - Use a Nightscout access token with the minimum required permissions.
 - Restrict SSH access to trusted devices and keep the OS updated.
 - Use console autologin only where physical access to the Raspberry Pi is trusted.
 
-### 2.3.13 Configuration status
+### 2.2.13 Configuration status
 
 | Component | Status |
 |---|---|
@@ -934,13 +936,13 @@ getent hosts nightscout.lan.local
 | Swap temporarily disabled | Confirmed |
 | Swap permanently disabled | Not confirmed |
 
-## 2.4 Result
+## 2.3 Result
 
-### 2.4.1 7 inch diplay
+### 2.3.1 7 inch diplay
 
 ![Empty Nightscout](https://github.com/tslenter/CGM-Monitor-Dashboard/blob/main/images/7%20inch%20dashboard.png)
 
-### 2.4.2 27 inch diplay
+### 2.3.2 27 inch diplay
 
 ![Empty Nightscout](https://github.com/tslenter/CGM-Monitor-Dashboard/blob/main/images/27inchdashboard.png)
 
