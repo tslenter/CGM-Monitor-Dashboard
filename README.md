@@ -916,8 +916,6 @@ getent hosts nightscout.lan.local
 ### 2.3.12 Security notes
 
 - Use a Nightscout access token with the minimum required permissions.
-- Never publish real tokens, passwords, or patient data in a public repository.
-- Keep Chromium's sandbox enabled; do not add `--no-sandbox`.
 - Restrict SSH access to trusted devices and keep the OS updated.
 - Use console autologin only where physical access to the Raspberry Pi is trusted.
 
