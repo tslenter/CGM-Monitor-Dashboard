@@ -444,7 +444,7 @@ apache2ctl configtest && a2ensite nightscout.conf && systemctl reload apache2
 
 ![Empty Nightscout](images/empty-nightscout.png)
 
-# 2. Kiosk / Dashboard
+# 2. Raspberry Pi OS Bullseye  — Nightscout Kiosk Client / Dashboard
 ````markdown
 Software requirements:
 
@@ -616,7 +616,7 @@ EOF
 
 reboot
 ````
-## 2.3 Raspberry Pi OS Trixie — Nightscout Kiosk Client
+## 2.3 Raspberry Pi OS Trixie — Nightscout Kiosk Client / Dashboard
 
 > **Platform:** Raspberry Pi Zero 2 W (512 MB RAM) · Raspberry Pi OS Trixie Lite (32-bit) · Waveshare 7-inch HDMI touchscreen (1024×600).
 >
