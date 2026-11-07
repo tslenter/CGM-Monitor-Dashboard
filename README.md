@@ -933,8 +933,7 @@ getent hosts nightscout.lan.local
 | Hidden cursor using `-nocursor` | Configured |
 | Bluetooth disabled | Confirmed |
 | Weekly Monday 02:00 reboot | Configured; Cron active |
-| Swap temporarily disabled | Confirmed |
-| Swap permanently disabled | Not confirmed |
+| Swap permanently disabled | Confirmed |
 
 ## 2.3 Result
 
